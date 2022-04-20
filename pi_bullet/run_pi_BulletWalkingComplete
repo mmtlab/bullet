@@ -1,0 +1,34 @@
+#!/usr/bin/octave -qf
+
+printf ("current directory: %s\n", pwd())
+addpath("src")
+addpath("src/sharedFunctions")
+addpath("src/basicFunctions")
+arg_list = argv ();
+
+isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
+
+if isOctave
+    disp('Using Octave')
+    pkg load signal
+    pkg load mapping
+    pkg load statistics
+else
+    disp('Using Matlab')
+end
+
+if nargin != 6
+  printf ("ERROR: There should be 6 args. Two .csv file containing the experimental left and right crutches forces, a .yaml file containing the experimental gait events, two .csv file containing the experimental left and right shoulder forces, and the dir where the results will be stored\n");
+  printf ("Usage:\n");
+  printf ("\t./run_pi_BulletWalking csv_left_crutches_filename csv_right_crutches_filename yaml_gait_events_filename csv_left_shoulder_filename csv_right_shoulder_filename result_dir\n\n");
+  exit();
+endif
+
+printf ("csv left crutches file: %s\n", arg_list{1});
+printf ("csv right crutches file: %s\n", arg_list{2});
+printf ("yaml gait events file: %s\n", arg_list{3});
+printf ("csv left shoulder file: %s\n", arg_list{4});
+printf ("csv right shoulder file: %s\n", arg_list{5});
+printf ("result dir: %s\n", arg_list{6});
+
+computePiBulletWalkingComplete(arg_list{1}, arg_list{2}, arg_list{3}, arg_list{4}, arg_list{5}, arg_list{6});
